@@ -1,4 +1,4 @@
-const thoughtsController = {
+const thoughtsControllers = {
     createThoughts: async ({ params, body }, res) => {
       try {
         const { _id } = await Thoughts.create(body);
@@ -104,5 +104,6 @@ const thoughtsController = {
         return res.status(400).json(err);
       }
     }
-}
-  
+};
+
+module.exports = thoughtsControllers;

@@ -1,8 +1,8 @@
 // Require Users Model
-const { Users } = require('../models');
+// const { Users } = require('./models/User');
 
 // Set up Users Controller
-const usersController = {
+const userControllers = {
 
   // Create a new User
   async createUsers({ body }, res) {
@@ -87,4 +87,6 @@ const usersController = {
       res.json(err);
     }
 }
-}
+};
+
+module.exports = userControllers;
