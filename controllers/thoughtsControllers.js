@@ -1,8 +1,10 @@
+const { User, Thought } = require('../models');
+
 const thoughtsControllers = {
     createThoughts: async ({ params, body }, res) => {
       try {
-        const { _id } = await Thoughts.create(body);
-        const updatedUser = await Users.findOneAndUpdate(
+        const { _id } = await Thought.create(body);
+        const updatedUser = await User.findOneAndUpdate(
           { _id: params.userId },
           { $push: { thoughts: _id } },
           { new: true }
@@ -18,7 +20,7 @@ const thoughtsControllers = {
   
     getAllThoughts: async (req, res) => {
       try {
-        const thoughts = await Thoughts.find({})
+        const thoughts = await Thought.find({})
           .populate({ path: "reactions", select: "-__v" })
           .select("-__v");
         return res.json(thoughts);
@@ -29,7 +31,7 @@ const thoughtsControllers = {
   
     getThoughtsById: async ({ params }, res) => {
       try {
-        const thought = await Thoughts.findOne({ _id: params.id })
+        const thought = await Thought.findOne({ _id: params.id })
           .populate({ path: "reactions", select: "-__v" })
           .select("-__v");
         if (!thought) {
@@ -43,7 +45,7 @@ const thoughtsControllers = {
   
     updateThoughts: async ({ params, body }, res) => {
       try {
-        const updatedThought = await Thoughts.findOneAndUpdate(
+        const updatedThought = await Thought.findOneAndUpdate(
           { _id: params.id },
           body,
           { new: true, runValidators: true }
@@ -61,7 +63,7 @@ const thoughtsControllers = {
   
     deleteThoughts: async ({ params }, res) => {
       try {
-        const deletedThought = await Thoughts.findOneAndDelete({ _id: params.id });
+        const deletedThought = await Thought.findOneAndDelete({ _id: params.id });
         if (!deletedThought) {
           return res.status(404).json({ message: "Thought not found" });
         }
@@ -73,7 +75,7 @@ const thoughtsControllers = {
   
     addReaction: async ({ params, body }, res) => {
       try {
-        const updatedThought = await Thoughts.findOneAndUpdate(
+        const updatedThought = await Thought.findOneAndUpdate(
           { _id: params.thoughtId },
           { $push: { reactions: body } },
           { new: true, runValidators: true }
@@ -91,7 +93,7 @@ const thoughtsControllers = {
   
     deleteReaction: async ({ params }, res) => {
       try {
-        const updatedThought = await Thoughts.findOneAndUpdate(
+        const updatedThought = await Thought.findOneAndUpdate(
           { _id: params.thoughtId },
           { $pull: { reactions: { reactionId: params.reactionId } } },
           { new: true }
@@ -106,4 +108,4 @@ const thoughtsControllers = {
     }
 };
 
-module.exports = thoughtsControllers;
+module.exports = thoughtControllers;
